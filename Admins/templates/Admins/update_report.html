@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<main>
+    <div class="container mt-5">
+        <h1 class="text-start fw-bold mb-4">Update Waste Report</h1>
+        <div class="card p-4">
+            <p><strong>User:</strong> {{ report.user.username }}</p>
+            <p><strong>Description:</strong> {{ report.description }}</p>
+            <p><strong>Location:</strong> {{ report.location }}</p>
+            <p><strong>Status:</strong> {{ report.status }}</p>
+            <p><strong>Assigned Worker:</strong> 
+                {% if report.assigned_worker %}
+                    {{ report.assigned_worker.username }}
+                {% else %}
+                    Not Assigned
+                {% endif %}
+            </p>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="assigned_worker" class="form-label">Assign a Worker</label>
+                    <select name="assigned_worker" id="assigned_worker" class="form-select" required>
+                        <option value="">Select a Worker</option>
+                        {% for worker in workers %}
+                        <option value="{{ worker.id }}">{{ worker.username }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Assign Worker</button>
+                <a href="{% url 'Admins:manage-report' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}

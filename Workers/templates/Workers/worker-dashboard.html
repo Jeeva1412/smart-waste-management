@@ -1,0 +1,95 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<main>
+<div class="container mt-5">
+    <h1 class="text-start mb-4">Worker Dashboard</h1>
+
+    <div class="row">
+        <!-- Assigned Reports Section -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Assigned Reports</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Description</th>
+                                <th>Location</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for report in assigned_reports %}
+                            <tr onclick="window.location.href='{% url 'workers:report-details' report.id %}';" style="cursor: pointer;">
+                                <td>{{ report.description }}</td>
+                                <td>{{ report.location }}</td>
+                                <td>
+                                    {% if report.status == "pending" %}
+                                        <span class="badge bg-danger">Pending</span>
+                                    {% elif report.status == "assigned" %}
+                                        <span class="badge bg-warning">In Progress</span>
+                                    {% elif report.status == "resolved" %}
+                                        <span class="badge bg-success">Completed</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center">No assigned reports</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Assigned Pickups Section -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Assigned Pickups</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Location</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pickup in assigned_pickups %}
+                            <tr onclick="window.location.href='{% url 'workers:pickup-details' pickup.id %}';" style="cursor: pointer;">
+                                <td>{{ pickup.location }}</td>
+                                <td>{{ pickup.date }}</td>
+                                <td>{{ pickup.time }}</td>
+                                <td>
+                                    {% if pickup.status == "scheduled" %}
+                                    <span class="badge bg-danger">Pending</span>
+                                    {% elif pickup.status == "assigned" %}
+                                    <span class="badge bg-warning">Assigned</span>
+                                    {% elif pickup.status == "completed" %}
+                                    <span class="badge bg-success">Completed</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center">No assigned pickups</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends "main.html" %}
+
+{% block title %}Home - Smart Waste Management{% endblock %}
+
+{% block content %}
+ <!-- Main Content -->
+<main>
+ <div class="container mt-5">
+    <h1 class="text-start fw-bold mb-4 pb-4">Welcome to Smart Waste Management</h1>
+
+    <div class="row g-4">
+        <!-- Quick Links Section -->
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="h4 fw-semibold mb-3">Quick Links</h2>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <a href="{% url 'report_issue' %}" class="text-decoration-none text-success">Report Waste Issue</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'schedule_pickup' %}" class="text-decoration-none text-success">Schedule Pickup</a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="{% url 'recycling_bins' %}" class="text-decoration-none text-success">Locate Recycling Bins</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Recycling Bin Locations Section -->
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="h4 fw-semibold mb-3">Recycling Bin Locations</h2>
+                <div id="map" class="bg-light text-center" style="height: 250px;"></div>
+                <p class="text-muted mt-2">Click on the map to get coordinates:</p>
+                <p id="coordinates" class="fw-semibold"></p>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+
+<!-- Leaflet.js (Free Map) -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var map = L.map('map').setView([10.0159, 76.3419], 13); // Default center location
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Click event to get lat/lng
+    map.on('click', function (e) {
+        var lat = e.latlng.lat.toFixed(6);
+        var lng = e.latlng.lng.toFixed(6);
+        document.getElementById('coordinates').innerText = `Latitude: ${lat}, Longitude: ${lng}`;
+
+        // Remove previous markers
+        map.eachLayer(function (layer) {
+            if (layer instanceof L.Marker) {
+                map.removeLayer(layer);
+            }
+        });
+
+        // Add a marker at clicked location
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup(`Latitude: ${lat} <br> Longitude: ${lng}`)
+            .openPopup();
+    });
+});
+</script>
+
+{% endblock %}

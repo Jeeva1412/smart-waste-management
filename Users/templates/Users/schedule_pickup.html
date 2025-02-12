@@ -1,0 +1,33 @@
+{% extends 'main.html' %}
+
+{% block content %}
+     <!-- Main Content -->
+<main>
+<div class="container ">
+    <h1 class="text-startr fw-bold mb-4 mt-5">Schedule Waste Pickup</h1>
+     <div class=" mt-5 d-flex justify-content-center align-items-center">
+        <div class="col">
+            
+            <div class="card p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Date</label>
+                        <input type="date" id="date" name="date" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="time" class="form-label">Time</label>
+                        <input type="time" id="time" name="time" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" id="location" name="location" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Schedule Pickup</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+{% endblock content %}

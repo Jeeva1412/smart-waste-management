@@ -1,0 +1,95 @@
+{% extends 'main.html' %}
+
+{% block style %}
+    <style>
+        .map-container {
+            height: 500px;
+            width: 100%;
+            border-radius: 10px;
+        }
+        #location-info {
+            font-weight: bold;
+            color: #d9534f; /* Bootstrap Danger Color */
+        }
+    </style>
+
+    <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+{% endblock style %}
+
+{% block content %}
+<main class="container mt-5">
+    <h1 class="text-start fw-bold mb-4 text-success">Find the Nearest Dustbin 🗑️</h1>
+    <p class="text-muted">Click anywhere on the map to get location details.</p>
+
+    <div class="card p-4">
+        <div id="map" class="map-container"></div>
+
+        <h2 class="fw-semibold mt-4">Clicked Location Details</h2>
+        <p id="location-info" class="text-success">Click on the map to see latitude & longitude.</p>
+
+        <h2 class="fw-semibold mt-4">Nearby Dustbins</h2>
+        <ul class="list-group mt-3">
+            <li class="list-group-item">📍 City Park - Main Entrance</li>
+            <li class="list-group-item">📍 Central Library - Parking Lot</li>
+            <li class="list-group-item">📍 Community Center - Front Yard</li>
+            <li class="list-group-item">📍 Shopping Mall - East Entrance</li>
+        </ul>
+    </div>
+</main>
+    
+<!-- Include Leaflet.js -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+   function initMap() {
+    var defaultLatLng = [11.080808, 76.990143]; // Default Location (Coimbatore)
+
+    var map = L.map('map').setView(defaultLatLng, 14); // Set default location
+
+    // Load OpenStreetMap Tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Add Default Marker at the Initial Location
+    L.marker(defaultLatLng)
+        .addTo(map)
+        .bindPopup("📍 Default Location: Lat: 11.080808, Lon: 76.990143")
+        .openPopup();
+
+    // Get User Location (If Available)
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            var userPos = [position.coords.latitude, position.coords.longitude];
+            map.setView(userPos, 15); // Zoom into user's location
+
+            L.marker(userPos, {
+                icon: L.icon({ 
+                    iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-red.png', 
+                    iconSize: [38, 38] 
+                })
+            }).addTo(map).bindPopup("Your Location").openPopup();
+        }, function () {
+            console.log("Geolocation permission denied. Using default location.");
+        });
+    }
+
+    // Click event to show clicked location details
+    map.on("click", function (e) {
+        var lat = e.latlng.lat.toFixed(6);
+        var lon = e.latlng.lng.toFixed(6);
+        document.getElementById("location-info").innerHTML = 
+            `📍 Clicked Location: <strong>Lat:</strong> ${lat}, <strong>Lon:</strong> ${lon}`;
+
+        L.popup()
+            .setLatLng(e.latlng)
+            .setContent(`You clicked here: <br> 📍 <b>Lat:</b> ${lat}, <b>Lon:</b> ${lon}`)
+            .openOn(map);
+    });
+}
+
+    document.addEventListener("DOMContentLoaded", initMap);
+</script>
+
+{% endblock content %}

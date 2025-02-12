@@ -1,0 +1,79 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<main>
+    <div class="container mt-5">
+        <h1 class="text-start mb-4">{{ task_type|title }} Details</h1>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">{{ task_type|title }} Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-6 py-4 px-4">
+                        {% if task_type == "report" %}
+                    <p><strong>Reported By:</strong> {{ task.user.username }}</p>
+                    <p><strong>Description:</strong> {{ task.description }}</p>
+                    <p><strong>Location:</strong> {{ task.location }}</p>
+                    <p><strong>Status:</strong> 
+                        <form method="POST" action="{% url 'workers:update_status' task.id task_type %}">
+                            {% csrf_token %}
+                            <select name="status" class="form-select d-inline w-auto">
+                                {% if task_type == "report" %}
+                                    <option value="pending" {% if task.status == "pending" %}selected{% endif %}>Pending</option>
+                                    <option value="assigned" {% if task.status == "assigned" %}selected{% endif %}>In Progress</option>
+                                    <option value="resolved" {% if task.status == "resolved" %}selected{% endif %}>Completed</option>
+                                {% elif task_type == "pickup" %}
+                                    <option value="scheduled" {% if task.status == "scheduled" %}selected{% endif %}>Scheduled</option>
+                                    <option value="completed" {% if task.status == "completed" %}selected{% endif %}>Completed</option>
+                                {% endif %}
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        </form>
+                    </p>
+                    
+                    
+                    <p><strong>Assigned Worker:</strong> {{ task.assigned_worker.username }}</p>
+                    <p><strong>Reported On:</strong> {{ task.created_at|date:"Y-m-d H:i" }}</p>
+
+                {% elif task_type == "pickup" %}
+                    <p><strong>Scheduled By:</strong> {{ task.user.username }}</p>
+                    <p><strong>Location:</strong> {{ task.location }}</p>
+                    <p><strong>Date:</strong> {{ task.date }}</p>
+                    <p><strong>Time:</strong> {{ task.time }}</p>
+                    <p><strong>Status:</strong> 
+                        <form method="POST" action="{% url 'workers:update_status' task.id task_type %}">
+                            {% csrf_token %}
+                            <select name="status" class="form-select d-inline w-auto">
+                                {% if task_type == "report" %}
+                                    <option value="pending" {% if task.status == "pending" %}selected{% endif %}>Pending</option>
+                                    <option value="assigned" {% if task.status == "assigned" %}selected{% endif %}>In Progress</option>
+                                    <option value="resolved" {% if task.status == "resolved" %}selected{% endif %}>Completed</option>
+                                {% elif task_type == "pickup" %}
+                                    <option value="scheduled" {% if task.status == "scheduled" %}selected{% endif %}>Scheduled</option>
+                                    <option value="completed" {% if task.status == "completed" %}selected{% endif %}>Completed</option>
+                                {% endif %}
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        </form>
+                    </p>
+                    
+                    <p><strong>Assigned Admin:</strong> {{ task.admin.username }}</p>
+                    <p><strong>Assigned Worker:</strong> {{ task.worker.username }}</p>
+                {% endif %}
+                    </div>
+                    <div class="col-6 ps-3">
+                        {% if task.image %}
+                        <p><strong>Image:</strong></p>
+                        <img src="{{ task.image.url }}" alt="Waste Report Image" class="img-fluid  text-center">
+                    {% endif %}
+                    </div>
+                   
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

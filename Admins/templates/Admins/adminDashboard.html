@@ -1,0 +1,98 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<main>
+<div class="container mt-5">
+    <h1 class="text-start fw-bold mb-4">Admin Dashboard</h1>
+    
+    <!-- Statistics Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card p-4 text-center">
+                <h2 class="h5">Total Reports</h2>
+                <p class="display-4 text-success fw-bold">{{total_reports|default:"0" }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-4 text-center">
+                <h2 class="h5">Resolved Reports</h2>
+                <p class="display-4 text-success fw-bold">{{ resolved_reports }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-4 text-center">
+                <h2 class="h5">Assigned Reports</h2>
+                <p class="display-4 text-danger fw-bold">{{ assigned_reports }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-4 text-center">
+                <h2 class="h5">Pending Reports</h2>
+                <p class="display-4 text-danger fw-bold">{{ pending_reports }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card p-4 text-center">
+                <h2 class="h5">Total Pickups</h2>
+                <p class="display-4 text-success fw-bold">{{ total_pickups }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-4 text-center">
+                <h2 class="h5">Completed Pickups</h2>
+                <p class="display-4 text-success fw-bold">{{ completed_pickups }}</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-4 text-center">
+                <h2 class="h5">Assigned Pickups</h2>
+                <p class="display-4 text-danger fw-bold">{{ assigned_pickups }}</p>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-4 text-center">
+                <h2 class="h5">Pending Pickups</h2>
+                <p class="display-4 text-danger fw-bold">{{ pending_pickups }}</p>
+            </div>
+        </div>
+
+        
+    </div>
+
+    <!-- Quick Actions & Recent Activity -->
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="h4">Quick Actions</h2>
+                <div class="d-grid gap-3 mt-3">
+                    <a href="{% url 'Admins:create-worker' %}" class="btn btn-success">Create Worker</a>
+                    <a href="{% url 'Admins:manage-report' %}" class="btn btn-success">Manage Reports</a>
+                    <a href="{% url 'Admins:view-pickups' %}" class="btn btn-success">Assign Pickups</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="h4">Recent Activity</h2>
+                <ul class="list-group mt-3">
+                    {% for report in recent_reports %}
+                        <li class="list-group-item">New waste report submitted at {{ report.location }} - {{ report.created_at|timesince }} ago</li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No recent reports</li>
+                    {% endfor %}
+                    {% for pickup in recent_pickups %}
+                        <li class="list-group-item">Pickup scheduled at {{ pickup.location }} for {{ pickup.date }} - {{ pickup.time }}</li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">No recent pickups</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
+{% endblock content %}

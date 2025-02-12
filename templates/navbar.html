@@ -1,0 +1,46 @@
+
+<header>
+    <nav class="navbar navbar-expand-lg px-4 py-3">
+        <div class="container">
+            <a class="navbar-brand text-white fw-bold" href="{% url 'home' %}">Smart Waste Management</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+
+                    
+                    
+
+                    {% if request.user.is_authenticated %}
+                        {% if request.user.role == "administrator" %}
+                            <li class="nav-item"><a class="nav-link text-white" href="{% url 'Admins:create-worker' %}">Create Worker</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="{% url 'Admins:manage-report' %}">Manage Reports</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="{% url 'Admins:view-pickups' %}">Assign Pickups</a></li>
+                            <li class="nav-item"><a class="nav-link text-white" href="{% url 'Admins:admin-dashboard' %}">Dashboard</a></li>
+                        {% elif request.user.role == "publicUser" %}
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'report_issue' %}">Report Issue</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'schedule_pickup' %}">Schedule Pickup</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'recycling_bins' %}">Recycling Bins</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'user-dashboard' %}">Dashboard</a></li>
+
+                        {% elif request.user.role == "worker" %}
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'workers:worker-dashboard' %}">Worker Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'workers:completed-tasks' %} ">Completed Tasks</a></li>
+                    
+                        {% endif %}
+
+                        <li class="nav-item"><a class="nav-link text-white ms-3" href="{% url 'logout' %}">Logout</a></li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'report_issue' %}">Report Issue</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'schedule_pickup' %}">Schedule Pickup</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'recycling_bins' %}">Recycling Bins</a></li>
+                        <li class="nav-item"><a class="nav-link text-white" href="{% url 'user-dashboard' %}">Dashboard</a></li>
+                        <li class="nav-item"><a class="nav-link text-white ms-3" href="{% url 'login' %}">Login/Signup</a></li>
+                    {% endif %}
+
+                </ul> 
+            </div>
+        </div>
+    </nav>
+</header>

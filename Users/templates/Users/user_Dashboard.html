@@ -1,0 +1,85 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<main class="container mt-5">
+    <h1 class="text-start fw-bold mb-5">User Dashboard</h1>
+    <div class="row">
+        <!-- Reported Issues Section -->
+        <div class="col-md-6">
+            <div class="card p-4 mb-4">
+                <h2 class="fw-semibold mb-3">Reported Issues</h2>
+                <table class="table table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Description</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for issue in reported_issues %}
+                        <tr>
+                            <td>{{ issue.description }}</td>
+                            <td>{{ issue.location }}</td>
+                            <td>
+                                {% if issue.status == "pending" %}
+                                        <span class="badge bg-danger">Pending</span>
+                                    {% elif issue.status == "assigned" %}
+                                        <span class="badge bg-warning">In Progress</span>
+                                    {% elif issue.status == "resolved" %}
+                                        <span class="badge bg-success">Completed</span>
+                                    {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">No issues reported yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pickup History Section -->
+        <div class="col-md-6">
+            <div class="card p-4">
+                <h2 class="fw-semibold mb-3">Pickup History</h2>
+                <table class="table table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pickup in pickup_history %}
+                        <tr>
+                            <td>{{ pickup.date }}</td>
+                            <td>{{ pickup.time }}</td>
+                            <td>{{ pickup.location }}</td>
+                            <td>
+                                {% if pickup.status == "scheduled" %}
+                                <span class="badge bg-danger">Pending</span>
+                                {% elif pickup.status == "assigned" %}
+                                <span class="badge bg-warning">Assigned</span>
+                                {% elif pickup.status == "completed" %}
+                                <span class="badge bg-success">Completed</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center">No pickups scheduled yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+{% endblock content %}

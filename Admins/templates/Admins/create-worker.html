@@ -1,0 +1,124 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<main>
+    <div class="container mt-5">
+        <h1 class="text-start fw-bold mb-4">Create Worker</h1>
+
+        <div class="row">
+            <!-- Add Worker Form -->
+            <div class="col-md-6">
+                <div class="card p-4 mb-4">
+                    <h2 class="fw-semibold mb-3">Add New Worker</h2>
+                    <form method="POST" action="{% url 'Admins:create-worker' %}">
+                        {% csrf_token %}
+
+                        <!-- Username Field -->
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            {{ form.username }}
+                            {% for error in form.username.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="mb-3">
+                            <label class="form-label">First Name</label>
+                            {{ form.first_name }}
+                            {% for error in form.first_name.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="mb-3">
+                            <label class="form-label">Last Name</label>
+                            {{ form.last_name }}
+                            {% for error in form.last_name.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            {{ form.email }}
+                            {% for error in form.email.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div class="mb-3">
+                            <label class="form-label">Phone Number</label>
+                            {{ form.mobile_number }}
+                            {% for error in form.mobile_number.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Role -->
+                        <div class="mb-3">
+                            <label class="form-label">Role</label>
+                            {{ form.role }}
+                            {% for error in form.role.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Password -->
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            {{ form.password1 }}
+                            {% for error in form.password1.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            {{ form.password2 }}
+                            {% for error in form.password2.errors %}
+                                <div class="text-danger">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <button type="submit" class="btn btn-success w-100">Add Worker</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Workers Table -->
+            <div class="col-md-6">
+                <div class="card p-4">
+                    <h2 class="fw-semibold mb-3">Existing Workers</h2>
+                    <table class="table table-striped">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Role</th>
+                                <th>Contact</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for worker in workers %}
+                            <tr>
+                                <td>{{ worker.first_name }} {{ worker.last_name }}</td>
+                                <td>{{ worker.role }}</td>
+                                <td>{{ worker.mobile_number }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="3" class="text-center">No workers available.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock content %}

@@ -1,0 +1,49 @@
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environment variables and config files
+.env
+*.env
+
+# Django database files
+db.sqlite3
+*.sqlite3
+
+# Static and media files (if you collect static in Docker)
+static/
+media/
+
+# Git files
+.git
+.gitignore
+
+# Dockerfile and Docker Compose files (optional)
+Dockerfile
+docker-compose.yml
+
+# VSCode and IDE config files
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
+*.pot
+*.mo
+*.swp
+*.swo
+*.DS_Store
+
+# Node modules (if you use node for frontend assets)
+node_modules/
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Python virtual environment
+venv/
+env/
+ENV/
